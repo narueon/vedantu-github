@@ -10,8 +10,16 @@ const  allExtras =  compose(applyMiddleware(thunk),...arr)
 export const store = createStore(
     allReducers,
     {
-      repos: [],
-      user: {}
+      repos: {
+        repos: [],
+        error: null,
+        loading: true
+      },
+      user: {
+        user: {},
+        loading: true,
+        error: null
+      }
     },allExtras
     
   );

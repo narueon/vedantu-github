@@ -23,10 +23,10 @@ class RepoList extends React.Component {
   }
   
   render() {
-    if(this.props.repos.length === 0){
+    if(this.props.repos.repos.length === 0){
       return <div>Loading...</div>
     }
-    let reposToShow = this.showItems(this.props.repos)
+    let reposToShow = this.showItems(this.props.repos.repos)
     return (
       <div style={{ padding: 20 }}>
         <p>Popular Repositories</p>

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Button } from "./styled";
-import fetchUser from "../actions/user-action";
+import fetchUser, {fetchUserFail, fetchUserStart} from "../actions/user-action";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -14,14 +14,25 @@ class Profile extends React.Component {
     this.fetchUserData();
   }
   fetchUserData() {
+    this.props.fetchUserStart()
     fetch("https://api.github.com/users/supreetsingh247")
-      .then(response => response.json())
-      .then(json => this.props.fetchUser(json));
+      .then(response => {
+        if(!response.ok){
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
+      .then(json => this.props.fetchUser(json))
+      .catch(error => this.props.fetchUserFail(error))
   }
   render() {
     // console.log(this.props);
-    if (this.props.user === {}) {
+    let { user, error, loading } = this.props.user
+    if (loading === true) {
       return <div>Loading...</div>;
+    }
+    if (error){
+      return <div>{error}</div>
     }
     let {
       avatar_url,
@@ -31,7 +42,7 @@ class Profile extends React.Component {
       name,
       login,
       company
-    } = this.props.user;
+    } = user;
     return (
       <div>
         <div
@@ -98,7 +109,11 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUser: data => dispatch(fetchUser(data))
+    fetchUser: data => dispatch(fetchUser(data)),
+    fetchUserFail: data => dispatch(fetchUserFail(data)),
+    fetchUserStart: data => dispatch(fetchUserStart())
+
+
   };
 };
 export default connect(
