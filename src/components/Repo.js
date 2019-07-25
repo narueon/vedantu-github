@@ -18,7 +18,9 @@ export default function Repo({repo}) {
         border: "1px solid rgba(0,0,0,0.2)",
         padding: 10,
         borderRadius: 5,
-        minWidth: 300
+        width: 400,
+        maxWidth: 400
+
       }}
     >
       <a href={repo.html_url} style={{textDecoration: 'none'}}><p>{repo.name}</p></a>
